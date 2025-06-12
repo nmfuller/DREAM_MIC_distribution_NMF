@@ -3,7 +3,7 @@
 library(ggplot2); library(tidyverse); library(patchwork); library(ggthemes)
 
 # Set theme for all figures
-theme_set(theme_minimal(base_family="Times", base_size=16))
+theme_set(theme_minimal(base_family="Helvetica", base_size=16))
 
 # Read in antibiotic family data
 ab_fam <- read_csv("data/antibiotic_families.csv", show_col_types = FALSE)

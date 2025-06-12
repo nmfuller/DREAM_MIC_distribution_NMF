@@ -53,7 +53,7 @@ unique(full_data$mic)
 full_data$mic <- gsub('>4', '8', full_data$mic)
 full_data$mic <- gsub('>16', '32', full_data$mic)
 full_data$mic <- gsub('>8', '16', full_data$mic)
-full_data$mic <- gsub('≤0.06', '0.06', full_data$mic)
+full_data$mic <- gsub('≤0.06', '0.03', full_data$mic)
 full_data$mic <- gsub('≤0.015', '0.0075', full_data$mic)
 full_data$mic <- gsub('≤0.008', '0.004', full_data$mic)
 full_data$mic <- gsub('≤0.12', '0.06', full_data$mic)
@@ -197,6 +197,42 @@ res_prop <- full_data %>%
   pivot_wider(names_from = country, values_from = per) %>% 
   replace(is.na(.), 0) 
 
+antibiotic_order <- c(
+  "rifampicin", "isoniazid", "ethambutol", 
+  "clofazimine", "bedaquiline", "linezolid", 
+  "amikacin", "capreomycin", "kanamycin",       
+  "levofloxacin", "moxifloxacin", "ofloxacin"
+)
+
+# Calculate MIC quantiles
+mic_quantiles <- full_data %>%
+  group_by(antibiotic, country) %>%
+  summarise(
+    Number_of_isolates = n(),
+    First_quartile = quantile(mic, 0.25, na.rm = TRUE),
+    Second_quartile = quantile(mic, 0.5, na.rm = TRUE),
+    Third_quartile = quantile(mic, 0.75, na.rm = TRUE),
+    Inter_quartile_range = IQR(mic, na.rm = TRUE),
+    Min_mic = min(mic, na.rm = TRUE),
+    Max_mic = max(mic, na.rm = TRUE)
+  ) %>%
+  ungroup() %>%
+  mutate(antibiotic = factor(antibiotic, levels = antibiotic_order)) %>%
+  arrange(antibiotic, country)
+
+
+ggplot(full_data, aes(x = mic, y = country)) +
+  geom_boxplot(outlier.shape = NA, fill = "skyblue") +
+  facet_wrap(~ antibiotic, scales = "free_y") +
+  scale_x_log10() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(
+    title = "MIC Distribution per Drug and Country",
+    y = "MIC (log scale)",
+    x = "Antibiotic"
+  )
+
 ### Select columns of use
 full_data <- full_data %>% select(-c(continent,specimen,organism,subtype,is_xdr,is_pre_xdr,is_mdr))
 
@@ -205,4 +241,5 @@ write.csv(full_data, "data/full_data.csv")
 write.xlsx(combined_df, "data/allgroupings.xlsx", sheetName="Results")
 write.csv(bp, "data/breakpoints.csv")
 write.csv(res_prop,"data/resistance_proportions.csv") 
+write.xlsx(mic_quantiles, "data/mic_quantiles.xlsx")
                                      

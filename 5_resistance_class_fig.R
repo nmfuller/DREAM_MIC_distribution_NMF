@@ -3,7 +3,7 @@
 library(ggplot2); library(tidyr); library(ggthemes); library(dplyr); library(ggridges)
 library(RColorBrewer);library(openxlsx); library(tidyverse); library(patchwork)
 # Set theme for all plots
-theme_set(theme_minimal(base_family="Times", base_size=16))
+theme_set(theme_minimal(base_family="Helvetica", base_size=16))
 # Load in clean MIC data
 full_data <- (read.csv("data/full_data.csv"))
 # Set colours and labels for resistance classes

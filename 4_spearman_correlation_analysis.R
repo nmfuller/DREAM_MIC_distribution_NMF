@@ -3,7 +3,7 @@
 library(data.table);library(ggplot2);library(cowplot); library(dplyr); 
 library(patchwork); library(tidyr); library(ggthemes)
 # Set theme for all plots
-theme_set(theme_minimal(base_family="Times", base_size=16))
+theme_set(theme_minimal(base_family="Helvetica", base_size=16))
 
 # This script generates functions for the following: 
 # 1) Spearman rank correlation calculation definition

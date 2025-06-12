@@ -3,7 +3,7 @@
 library(ggplot2); library(tidyr); library(ggthemes); library(dplyr); 
 library(RColorBrewer);library(openxlsx); library(tidyverse); library(patchwork)
 # Set theme for all plots
-theme_set(theme_minimal(base_family="Times", base_size=16))
+theme_set(theme_minimal(base_family="Helvetica", base_size=16))
 
 colors <- c("South Africa" = "#000000", "Pakistan" = "#E69F00","Thailand" = "#56B4E9",        
             "Lithuania" = "#009E73","Vietnam" = "#F0E442","Turkey" = "#0072B2",         
@@ -51,7 +51,7 @@ summary(dd)$r.squared
           color ="Country",
           shape="Country") +
     annotate("text", x = 1.1, y = 0.075, label =  bquote(R^2 == .(0.21)), color = "#808080", size = 3) +
-    geom_errorbar(aes(ymin =mean_mic - sd_mic ,ymax = mean_mic + sd_mic, color=country, 
+    geom_errorbar(aes(ymin =mean_mic - sd_mic ,ymax = mean_mic + se, color=country, 
                   width = 0.01),linewidth  = 0.75) +
     geom_smooth(method = "lm", color="lightgrey",fill="lightgrey",alpha=0.3 ) +
     geom_hline(yintercept = 0.25, linetype="dashed", color = "#ff1493"))
@@ -65,11 +65,11 @@ summary(dd)$r.squared
          y = "MIC of bedaquiline isolates per year (mg/l)",
          color ="Year",
          shape="Year") +
-    geom_errorbar(aes(ymin = mean_mic - sd_mic,ymax = mean_mic + sd_mic, color=as.factor(year), 
+    geom_errorbar(aes(ymin = mean_mic - sd_mic,ymax = mean_mic + se, color=as.factor(year), 
                       width = 0.02)) +
     geom_smooth(method = "lm", color="lightgrey",fill="lightgrey",alpha=0.3 ) +
     geom_hline(yintercept = 0.25, linetype="dashed", color = "#ff1493")+
-    scale_y_continuous(limits=c(-0.1,0.25)) )
+    scale_y_continuous(limits=c(0,0.25)) )
 
 # Save plots
 ggsave(paste("plots/bdq_use_all.tiff"), plot = rr,  units = "cm", width = 25, height = 20, dpi = 320, bg = 'white')
