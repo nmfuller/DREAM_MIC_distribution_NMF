@@ -14,9 +14,9 @@ country_quantiles <- full_data %>%
   group_by(antibiotic, country) %>%
   summarise(
     Number_of_isolates = n(),
-    First_quartile = quantile(mic, 0.25, na.rm = TRUE),
-    Second_quartile = quantile(mic, 0.5, na.rm = TRUE),
-    Third_quartile = quantile(mic, 0.75, na.rm = TRUE),
+    Q1 = quantile(mic, 0.25, na.rm = TRUE),
+    Q2 = quantile(mic, 0.5, na.rm = TRUE),
+    Q3 = quantile(mic, 0.75, na.rm = TRUE),
     Inter_quartile_range = IQR(mic, na.rm = TRUE),
     Min_mic = min(mic, na.rm = TRUE),
     Max_mic = max(mic, na.rm = TRUE)
@@ -29,9 +29,9 @@ subtype_quantiles <- full_data %>%
   group_by(antibiotic, new_subtype) %>%
   summarise(
     Number_of_isolates = n(),
-    First_quartile = quantile(mic, 0.25, na.rm = TRUE),
-    Second_quartile = quantile(mic, 0.5, na.rm = TRUE),
-    Third_quartile = quantile(mic, 0.75, na.rm = TRUE),
+    Q1 = quantile(mic, 0.25, na.rm = TRUE),
+    Q2 = quantile(mic, 0.5, na.rm = TRUE),
+    Q3 = quantile(mic, 0.75, na.rm = TRUE),
     Inter_quartile_range = IQR(mic, na.rm = TRUE),
     Min_mic = min(mic, na.rm = TRUE),
     Max_mic = max(mic, na.rm = TRUE)
@@ -42,11 +42,12 @@ subtype_quantiles <- full_data %>%
 
 year_quantiles <- full_data %>%
   group_by(antibiotic, year) %>%
+  filter(year!=2011) %>%
   summarise(
     Number_of_isolates = n(),
-    First_quartile = quantile(mic, 0.25, na.rm = TRUE),
-    Second_quartile = quantile(mic, 0.5, na.rm = TRUE),
-    Third_quartile = quantile(mic, 0.75, na.rm = TRUE),
+    Q1 = quantile(mic, 0.25, na.rm = TRUE),
+    Q2 = quantile(mic, 0.5, na.rm = TRUE),
+    Q3 = quantile(mic, 0.75, na.rm = TRUE),
     Inter_quartile_range = IQR(mic, na.rm = TRUE),
     Min_mic = min(mic, na.rm = TRUE),
     Max_mic = max(mic, na.rm = TRUE)
