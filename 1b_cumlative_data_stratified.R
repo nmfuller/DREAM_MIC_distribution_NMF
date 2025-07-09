@@ -3,9 +3,8 @@
 library(data.table);library(ggplot2);library(cowplot); library(tidyverse); library(patchwork)
 
 # read in the clean MIC data 
-full_data <- as.data.table(read.csv("data/full_data.csv")) 
-# read in the cumulative MIC data for countries
-country_mic <- read_csv(paste0("plots/" ,"countryoutput.csv"), show_col_types = FALSE)
+full_data <- as.data.table(read.csv("data/full_data.csv")) %>%
+  filter(country == "Global")
 
 drugs <- unique(full_data$antibiotic)
 

@@ -53,12 +53,12 @@ unique(full_data$mic)
 full_data$mic <- gsub('>4', '8', full_data$mic)
 full_data$mic <- gsub('>16', '32', full_data$mic)
 full_data$mic <- gsub('>8', '16', full_data$mic)
-full_data$mic <- gsub('≤0.06', '0.03', full_data$mic)
-full_data$mic <- gsub('≤0.015', '0.0075', full_data$mic)
-full_data$mic <- gsub('≤0.008', '0.004', full_data$mic)
-full_data$mic <- gsub('≤0.12', '0.06', full_data$mic)
-full_data$mic <- gsub('≤0.03', '0.015', full_data$mic)
-full_data$mic <- gsub('≤0.25', '0.125', full_data$mic)
+full_data$mic <- gsub('≤0.06', '0.06', full_data$mic)
+full_data$mic <- gsub('≤0.015', '0.015', full_data$mic)
+full_data$mic <- gsub('≤0.008', '0.008', full_data$mic)
+full_data$mic <- gsub('≤0.12', '0.12', full_data$mic)
+full_data$mic <- gsub('≤0.03', '0.03', full_data$mic)
+full_data$mic <- gsub('≤0.25', '0.25', full_data$mic)
 full_data$mic <- gsub('1.4999999999999999E-2', '0.015', full_data$mic)
 unique(full_data$mic)
 
@@ -134,8 +134,7 @@ full_data <- full_data %>%
     is_mdr = any(antibiotic == "rifampicin" & res == "Resistant") ,
     is_pre_xdr = is_mdr & 
       (any(antibiotic == "moxifloxacin" & res == "Resistant") | 
-         any(antibiotic == "levofloxacin" & res == "Resistant")|
-         any(antibiotic == "ofloxacin" & res == "Resistant")),
+         any(antibiotic == "levofloxacin" & res == "Resistant")),
     is_xdr = is_pre_xdr & 
       (any(antibiotic == "bedaquiline" & res == "Resistant") | 
          any(antibiotic == "linezolid" & res == "Resistant")),

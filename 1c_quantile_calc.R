@@ -26,6 +26,7 @@ country_quantiles <- full_data %>%
   arrange(antibiotic, country)
 
 subtype_quantiles <- full_data %>%
+  filter(country != "Global") %>%
   group_by(antibiotic, new_subtype) %>%
   summarise(
     Number_of_isolates = n(),
@@ -41,6 +42,7 @@ subtype_quantiles <- full_data %>%
   arrange(antibiotic, new_subtype)
 
 year_quantiles <- full_data %>%
+  filter(country != "Global") %>%
   group_by(antibiotic, year) %>%
   filter(year!=2011) %>%
   summarise(
@@ -59,6 +61,4 @@ year_quantiles <- full_data %>%
 write.xlsx(country_quantiles, file="data/country_quantiles.xlsx", sheetName="Countries", rowNames=FALSE)
 write.xlsx(subtype_quantiles, file="data/subtype_quantiles.xlsx", sheetName="Subtypes", rowNames=FALSE)
 write.xlsx(year_quantiles, file="data/year_quantiles.xlsx", sheetName="Year", append=TRUE, rowNames=FALSE)
-
-
 

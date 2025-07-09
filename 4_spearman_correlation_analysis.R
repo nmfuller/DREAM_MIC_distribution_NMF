@@ -178,10 +178,9 @@ create_category_heatmap <- function(results, country) {
       "Moderate" = "#9AD2AD",
       "Strong" = "#57AABA"
     )) +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12), 
-          axis.text.y = element_text(size = 12),
+    theme(axis.text.x = element_text(angle = 45, hjust = 1), 
           legend.position = "bottom",
-          plot.title = element_text(size = 12)) +
+          plot.title = element_text(size = 14)) +
     labs(title = title_text,
          x = "",
          y = "",
@@ -229,25 +228,28 @@ kr_plot <- category_plots[["Korea, South"]]
 gl_plot <- category_plots[["Global"]]
 
 # Combine plots and save
-(combined_plot <- sa_plot + li_plot + th_plot + tw_plot + plot_layout(ncol=2, nrow=2,guides="collect", widths = c(1, -1 ,1,-1),heights =c(1, -1 ,1,-1,1,-1,1,-1)) &
-    theme(legend.position='bottom') +
-  plot_annotation(tag_levels = 'A'))
-
-combined_plot2 <- us_plot + tr_plot + kr_plot + gl_plot + plot_layout(ncol=2, nrow=2,guides="collect", widths = c(1, -1 ,1,-1),heights =c(1, -1 ,1,-1,1,-1,1,-1)) &
-  theme(legend.position='bottom')+
+combined_plot <- (sa_plot + li_plot + th_plot + tw_plot +
+                    plot_layout(ncol = 2, nrow = 2, guides = "collect") &
+                    theme(legend.position = "bottom")) +
   plot_annotation(tag_levels = 'A')
 
-combined_plot3 <- pk_plot + vn_plot + ph_plot + in_plot + plot_layout(ncol=2, nrow=2, guides="collect",widths = c(1, -1 ,1,-1),heights =c(1, -1 ,1,-1,1,-1,1,-1)) &
-  theme(legend.position='bottom')+
+combined_plot2 <- (us_plot + tr_plot + kr_plot + gl_plot + 
+  plot_layout(ncol=2, nrow=2,guides="collect") &
+  theme(legend.position='bottom')) +
   plot_annotation(tag_levels = 'A')
 
-ggsave(file.path("plots", "spearman_correlation_heatmaps_combined.png"), plot=combined_plot,
+combined_plot3 <- (pk_plot + vn_plot + ph_plot + in_plot + 
+                     plot_layout(ncol=2, nrow=2, guides="collect") &
+  theme(legend.position='bottom'))+
+  plot_annotation(tag_levels = 'A')
+
+ggsave(file.path("plots", "spearman_correlation_heatmaps_combined.pdf"), plot=combined_plot,
        bg = "white", width = 30, height = 27, units = "cm", dpi=320)
 
-ggsave(file.path("plots", "spearman_correlation_heatmaps_combined2.png"), plot=combined_plot2,
+ggsave(file.path("plots", "spearman_correlation_heatmaps_combined2.pdf"), plot=combined_plot2,
        bg = "white", width = 30, height = 27, units = "cm", dpi=320)
 
-ggsave(file.path("plots", "spearman_correlation_heatmaps_combined3.png"), plot=combined_plot3,
+ggsave(file.path("plots", "spearman_correlation_heatmaps_combined3.pdf"), plot=combined_plot3,
        bg = "white", width = 30, height = 27, units = "cm", dpi=320)
 
 # Create table S5
@@ -260,5 +262,5 @@ table_S5 <- correlation_categories %>%
   select(-index)
 
 # Save results to CSV
-write.csv(correlation_categories, file = file.path("plots", "spearman_correlation_categories.csv"), row.names = FALSE)
-write.csv(table_S5, file = file.path("plots", "table_S5.csv"), row.names = FALSE)
+#write.csv(correlation_categories, file = file.path("plots", "spearman_correlation_categories.csv"), row.names = FALSE)
+#write.csv(table_S5, file = file.path("plots", "table_S5.csv"), row.names = FALSE)
