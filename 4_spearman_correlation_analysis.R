@@ -3,7 +3,7 @@
 library(data.table);library(ggplot2);library(cowplot); library(dplyr); 
 library(patchwork); library(tidyr); library(ggthemes)
 # Set theme for all plots
-theme_set(theme_minimal(base_family="Helvetica", base_size=16))
+theme_set(theme_minimal(base_family="Helvetica", base_size=10))
 
 # This script generates functions for the following: 
 # 1) Spearman rank correlation calculation definition
@@ -178,16 +178,17 @@ create_category_heatmap <- function(results, country) {
       "Moderate" = "#9AD2AD",
       "Strong" = "#57AABA"
     )) +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          axis.text.y = element_text(angle = 45, hjust = 1),
           legend.position = "bottom",
-          plot.title = element_text(size = 14)) +
+          plot.title = element_text(size = 10)) +
     labs(title = title_text,
          x = "",
          y = "",
          fill = "Correlation\nStrength") +
     geom_text(aes(label = sprintf("%.2f", value),
                   color = category),
-              size = 3.4) +
+              size = 2.5) +
     scale_color_manual(values = c(
       "Negligible" = "azure3",
       "Weak" = "azure4",
@@ -228,12 +229,12 @@ kr_plot <- category_plots[["Korea, South"]]
 gl_plot <- category_plots[["Global"]]
 
 # Combine plots and save
-combined_plot <- (sa_plot + li_plot + th_plot + tw_plot +
+(combined_plot <- (sa_plot + li_plot + th_plot + tw_plot +
                     plot_layout(ncol = 2, nrow = 2, guides = "collect") &
-                    theme(legend.position = "bottom")) +
-  plot_annotation(tag_levels = 'A')
+                    theme(legend.position = "bottom", legend.justification=c(0.5,0), plot.tag.position = c(0.2, 1 ))) +
+  plot_annotation(tag_levels = 'A'))
 
-combined_plot2 <- (us_plot + tr_plot + kr_plot + gl_plot + 
+ combined_plot2 <- (us_plot + tr_plot + kr_plot + gl_plot + 
   plot_layout(ncol=2, nrow=2,guides="collect") &
   theme(legend.position='bottom')) +
   plot_annotation(tag_levels = 'A')
@@ -242,6 +243,9 @@ combined_plot3 <- (pk_plot + vn_plot + ph_plot + in_plot +
                      plot_layout(ncol=2, nrow=2, guides="collect") &
   theme(legend.position='bottom'))+
   plot_annotation(tag_levels = 'A')
+
+ggsave(file.path("plots", "fig2.jpg"), plot=combined_plot,
+       bg = "white", width = 18, height = 24, units = "cm", dpi=300)
 
 ggsave(file.path("plots", "spearman_correlation_heatmaps_combined.pdf"), plot=combined_plot,
        bg = "white", width = 30, height = 27, units = "cm", dpi=320)

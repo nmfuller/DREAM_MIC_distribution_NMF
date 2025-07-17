@@ -3,7 +3,7 @@
 library(ggplot2); library(tidyr); library(ggthemes); library(dplyr); library(ggridges)
 library(RColorBrewer);library(openxlsx); library(tidyverse); library(patchwork);library(scales)
 # Set theme for all plots
-theme_set(theme_minimal(base_family="Helvetica", base_size=14))
+theme_set(theme_minimal(base_family="Helvetica", base_size=12))
 # Load in clean MIC data
 full_data <- (read.csv("data/full_data.csv"))
 # Set colours and labels for resistance classes
@@ -99,7 +99,8 @@ bdq_c <- c_plots[["bedaquiline"]]; bdq_r <- r_plots[["bedaquiline"]]
     rif_r + inh_r + mox_r + 
     bdq_c + lin_c + ami_c + 
     bdq_r + lin_r + ami_r +
-  plot_layout(ncol=3, nrow=4, guides = "collect", axes="collect"))
+  plot_layout(ncol=3, nrow=4, guides = "collect", axes="collect") &
+    theme(legend.position = "bottom", legend.box="vertical", legend.justification=c(0.5,0)))
 
 (fig3S <- cap_c + clo_c + eth_c + 
     cap_r + clo_r + eth_r + 
@@ -109,5 +110,5 @@ bdq_c <- c_plots[["bedaquiline"]]; bdq_r <- r_plots[["bedaquiline"]]
 
 ### Save plots ###
 
-ggsave(paste("plots/fig3_density_cum.pdf"), plot = fig3, width = 30, height = 30, units = "cm", dpi = 320, bg = 'white')
+ggsave(paste("plots/fig3.jpg"), plot = fig3, width = 18, height = 24, units = "cm", dpi = 300, bg = 'white')
 ggsave(paste("plots/fig3S_density_cum.pdf"), plot = fig3S, width = 30, height = 30, units = "cm", dpi = 320, bg = 'white')

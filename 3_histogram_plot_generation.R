@@ -4,7 +4,7 @@ library(ggplot2); library(tidyverse); library(patchwork); library(ggthemes);
 library(ggridges); library(scales); library(colorBlindness)
 
 # Set theme for all figures
-theme_set(theme_minimal(base_family="Helvetica", base_size=16))
+theme_set(theme_minimal(base_family="Helvetica", base_size=10))
 # Read in antibiotic family data
 ab_fam <- read_csv("data/antibiotic_families.csv", show_col_types = FALSE)
 
@@ -54,7 +54,7 @@ for (i in antibiotics) {
     scale_x_log10(breaks = c(0.01, 0.10,1.00,10.0), limits=c(0.001,100), labels = label_number(accuracy=0.01)) +
     coord_cartesian(clip = "off") +
     theme(axis.text.x= element_text(angle = 45, hjust = 0.5),
-          plot.title = element_text(size = 14))
+          plot.title = element_text(size = 10))
 }
 
 rif <- country_plots[["rifampicin"]]
@@ -73,7 +73,7 @@ lin <- country_plots[["linezolid"]]
 (country_plot <- (rif + inh + eth + bdq + mox + lev + ofx + lin + ami + kan + cap  + clo) +
   plot_layout(ncol=4, nrow=3, guides = "collect", axes="collect"))
 
-ggsave(paste("plots/country_plot_hist.pdf"), plot = country_plot, width = 35, height = 30, units = "cm", dpi = 320, bg = 'white')
+ggsave(paste("plots/fig1.TiF"), plot = country_plot, width = 18, height = 24, units = "cm", dpi = 300, bg = 'white')
 
   ###### Year #####
 year_plots <- list()

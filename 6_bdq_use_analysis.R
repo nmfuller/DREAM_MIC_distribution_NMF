@@ -3,7 +3,7 @@
 library(ggplot2); library(tidyr); library(ggthemes); library(dplyr); 
 library(RColorBrewer);library(openxlsx); library(tidyverse); library(patchwork)
 # Set theme for all plots
-theme_set(theme_minimal(base_family="Helvetica", base_size=14))
+theme_set(theme_minimal(base_family="Helvetica", base_size=12))
 
 colors <- c("South Africa" = "#000000", "Pakistan" = "#E69F00","Thailand" = "#56B4E9",        
             "Lithuania" = "#009E73","Vietnam" = "#F0E442","Turkey" = "#0072B2",         
@@ -46,11 +46,11 @@ summary(dd)$r.squared
     geom_point(aes(color=country, shape=as.factor(country)), size=3) +
     scale_color_tableau(palette = "Jewel Bright") +
     scale_shape_manual(values = c(1,16,1,16,1,16,1,16,1)) +
-    labs( x = "Percentage of previous MDR/RR-TB patients treated with a regimen containing bedaquiline", 
+    labs( x = "Percentage of previous MDR/RR-TB patients\ntreated with a regimen containing bedaquiline", 
           y = "MIC of bedaquiline isolates per year (mg/L)",
           color ="Country",
           shape="Country") +
-    annotate("text", x = 1.1, y = 0.075, label =  bquote(R^2 == .(0.21)), color = "#808080", size = 3) +
+    annotate("text", x = 0.95, y = 0.06, label =  bquote(R^2 == .(0.21)), color = "#808080", size = 3) +
     geom_errorbar(aes(ymin =mean_mic - se ,ymax = mean_mic + se, color=country, 
                   width = 0.01),linewidth  = 0.75) +
     geom_smooth(method = "lm", color="lightgrey",fill="lightgrey",alpha=0.3 ) +
@@ -72,5 +72,6 @@ summary(dd)$r.squared
     scale_y_continuous(limits=c(0,0.25)) )
 
 # Save plots
-ggsave(paste("plots/bdq_use_all.pdf"), plot = rr,  units = "cm", width = 25, height = 20, dpi = 320, bg = 'white')
-ggsave(paste("plots/bdq_use_all2.pdf"), plot = rr2, width = 25, height = 20, units = "cm", dpi = 320, bg = 'white')
+ggsave(paste("plots/bdq_use_all.pdf"), plot = rr,  units = "cm", width = 25, height = 20, dpi = 300, bg = 'white')
+ggsave(paste("plots/fig4.jpeg"), plot = rr,  units = "cm", width = 18, height = 20, dpi = 300, bg = 'white')
+ggsave(paste("plots/bdq_use_all2.pdf"), plot = rr2, width = 25, height = 20, units = "cm", dpi = 300, bg = 'white')
