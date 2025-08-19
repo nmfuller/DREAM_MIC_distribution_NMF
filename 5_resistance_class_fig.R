@@ -34,8 +34,8 @@ for (i in antibiotics) {
     geom_vline(data=current_data, aes(xintercept = breakpoint), color = "darkgrey", linetype = "twodash", linewidth = 1) +
     labs(x= "MIC value (mg/L)",
          y='Cumulative proportion',
-         color="WHO TB\nresistance\nclassifications\n(# of isolates)",
-         shape="WHO TB\nresistance\nclassifications\n(# of isolates)",
+         color="WHO TB resistance classifications (# of isolates)",
+         shape="WHO TB resistance classifications (# of isolates)",
          title=i)  +
     scale_x_log10(breaks = c(0.01, 0.10,1.00,10.0), limits=c(0.001,100), labels = label_number(accuracy=0.01)) +
     scale_y_continuous(limits = c(0,1)) +
@@ -43,7 +43,8 @@ for (i in antibiotics) {
     geom_point(data = current_data, aes(x = MIC, y = cumulative_sum,group=new_subtype,color=new_subtype,shape=new_subtype), size = 1) +
     scale_shape_manual(values = c(1, 16, 1,16),labels=labels)+
     theme(axis.text.x= element_text(angle = 45, hjust = 0.5),
-          plot.title = element_text(size = 14))
+          plot.title = element_text(size = 9),
+          axis.title = element_text(size = 9))
 }
 
 #### Ridge plot ####
@@ -72,12 +73,12 @@ for (i in antibiotics) {
     scale_fill_manual(values=colors, labels=labels) +
     guides(fill = guide_legend(reverse=T)) +
     labs(x= "MIC value (mg/L)",
-         y='',
-         fill="WHO TB\nresistance\nclassifications\n(# of isolates)")  +
+         y='Number of isolates per MIC value',
+         fill="")  +
     scale_y_discrete(labels=c("Rifampicin Susceptible"="Rifampicin\nSusceptible")) +
     geom_vline(data=current_data, aes(xintercept = breakpoint), color = "darkgrey", linetype = "twodash", linewidth = 1) +
     coord_cartesian(clip = "off") +
-    theme(axis.text.x= element_text(angle = 45, hjust = 0.5))
+    theme(axis.text.x= element_text(angle = 45, hjust = 0.5), axis.title = element_text(size = 9))
   
 }
 
@@ -100,15 +101,20 @@ bdq_c <- c_plots[["bedaquiline"]]; bdq_r <- r_plots[["bedaquiline"]]
     bdq_c + lin_c + ami_c + 
     bdq_r + lin_r + ami_r +
   plot_layout(ncol=3, nrow=4, guides = "collect", axes="collect") &
-    theme(legend.position = "bottom", legend.box="vertical", legend.justification=c(0.5,0)))
+    theme(legend.position = "bottom", legend.box="vertical",
+          legend.title.position = "top", legend.spacing.y = unit(-.5, "cm"), 
+          legend.spacing.x = unit(1, "cm")))
 
 (fig3S <- cap_c + clo_c + eth_c + 
     cap_r + clo_r + eth_r + 
     kan_c + ofl_c + lev_c + 
     kan_r + ofl_r + lev_r +
-  plot_layout(ncol=3, nrow=4, guides = "collect", axes="collect"))
+  plot_layout(ncol=3, nrow=4, guides = "collect", axes="collect")&
+    theme(legend.position = "bottom", legend.box="vertical",
+          legend.title.position = "top", legend.spacing.y = unit(-.5, "cm"), 
+          legend.spacing.x = unit(1, "cm")))
 
 ### Save plots ###
 
 ggsave(paste("plots/fig3.jpg"), plot = fig3, width = 18, height = 24, units = "cm", dpi = 300, bg = 'white')
-ggsave(paste("plots/fig3S_density_cum.pdf"), plot = fig3S, width = 30, height = 30, units = "cm", dpi = 320, bg = 'white')
+ggsave(paste("plots/fig3S_density_cum.pdf"), plot = fig3S, width = 21, height = 33, units = "cm", dpi = 300, bg = 'white')

@@ -49,7 +49,7 @@ for (i in antibiotics) {
     geom_density_ridges(alpha=0.6, stat = "binline", breaks=bin_breaks, scale = 1.5, show.legend = FALSE) +
     scale_fill_manual(values = my_palette) +
     geom_vline(data=current_data, aes(xintercept = breakpoint), color = "firebrick1", linetype = "twodash", linewidth = 1.5) +
-    labs(x= "MIC value (mg/L)", y="", title=i)  +
+    labs(x= "MIC value (mg/L)", y="Number of isolates per MIC value", title=i)  +
     scale_y_discrete(labels=yaxis) +
     scale_x_log10(breaks = c(0.01, 0.10,1.00,10.0), limits=c(0.001,100), labels = label_number(accuracy=0.01)) +
     coord_cartesian(clip = "off") +
@@ -73,7 +73,7 @@ lin <- country_plots[["linezolid"]]
 (country_plot <- (rif + inh + eth + bdq + mox + lev + ofx + lin + ami + kan + cap  + clo) +
   plot_layout(ncol=4, nrow=3, guides = "collect", axes="collect"))
 
-ggsave(paste("plots/fig1.TiF"), plot = country_plot, width = 18, height = 24, units = "cm", dpi = 300, bg = 'white')
+ggsave(paste("plots/fig1.jpeg"), plot = country_plot, width = 18, height = 24, units = "cm", dpi = 300, bg = 'white')
 
   ###### Year #####
 year_plots <- list()
@@ -94,7 +94,7 @@ for (i in antibiotics) {
     scale_fill_tableau(palette="Tableau 10") +
     geom_vline(data=current_data, aes(xintercept = breakpoint), color = "darkgrey", linetype = "twodash", linewidth = 1) +
     labs(x= "MIC value (mg/L)",
-        y='')  +
+        y='Number of isolates per MIC value')  +
     scale_x_log10(breaks = c(0.01, 0.10,1.00,10.0), limits=c(0.001,100), labels = label_number(accuracy=0.01)) +
     coord_cartesian(clip = "off") +
     theme(axis.text.x= element_text(angle = 45, hjust = 0.5))
@@ -168,6 +168,6 @@ lin3 <- year_plots2[["linezolid"]]
     ami3 + kan3 + cap3 + clo3 +
     ami2 + kan2 + cap2 + clo2 +
     plot_layout(ncol=4, nrow=6, guides = "collect", axes="collect") &
-    theme(legend.position = "bottom") )
+    theme(legend.position = "bottom", legend.box ="vertical" ) )
 
-ggsave(paste("plots/year_plot.pdf"), plot = year_plot, width = 30, height = 40, units = "cm", dpi = 320, bg = 'white')
+ggsave(paste("plots/year_plot.pdf"), plot = year_plot, width = 18, height = 33, units = "cm", dpi = 300, bg = 'white')

@@ -123,7 +123,8 @@ categorize_correlations <- function(results) {
       correlation = cor_matrix[upper.tri(cor_matrix)],
       category = cut(abs(cor_matrix[upper.tri(cor_matrix)]),
                      breaks = c(-Inf, 0.1, 0.4, 0.7, Inf),
-                     labels = c("Negligible", "Weak", "Moderate", "Strong"))
+                     labels = c("Negligible\n(|ρ|<0.1)", "Weak\n(0.1≤|ρ|<0.4)", 
+                                "Moderate\n(0.4≤|ρ|<0.7)", "Strong\n(|ρ|≥0.7)"))
     )
     
      summary_data <- rbind(summary_data,
@@ -161,22 +162,23 @@ create_category_heatmap <- function(results, country) {
     select(-Var1_pos, -Var2_pos) %>%
     # Add category column
     mutate(category = case_when(
-      abs(value) >= 0.7 ~ "Strong",
-      abs(value) >= 0.4 ~ "Moderate",
-      abs(value) >= 0.1 ~ "Weak",
-      TRUE ~ "Negligible"
+      abs(value) >= 0.7 ~ "Strong\n(|ρ|≥0.7)",
+      abs(value) >= 0.4 ~ "Moderate\n(0.4≤|ρ|<0.7)",
+      abs(value) >= 0.1 ~ "Weak\n(0.1≤|ρ|<0.4)",
+      TRUE ~ "Negligible\n(|ρ|<0.1)"
     )) %>%
     # Convert category to factor with specific order
-    mutate(category = factor(category, levels = c("Negligible", "Weak", "Moderate", "Strong")))
+    mutate(category = factor(category, levels = c("Negligible\n(|ρ|<0.1)", "Weak\n(0.1≤|ρ|<0.4)", 
+                                                  "Moderate\n(0.4≤|ρ|<0.7)", "Strong\n(|ρ|≥0.7)")))
   
   # Create heatmap with category-based colors
   gg <- ggplot(cor_long, aes(x = Var1, y = Var2, fill = category)) +
     geom_tile(color = "white", lwd = 1, linetype = 1) +
     scale_fill_manual(values = c(
-      "Negligible" = "#FBFED1",
-      "Weak" = "#D4F2AA",
-      "Moderate" = "#9AD2AD",
-      "Strong" = "#57AABA"
+      "Negligible\n(|ρ|<0.1)" = "#FBFED1",
+      "Weak\n(0.1≤|ρ|<0.4)" = "#D4F2AA",
+      "Moderate\n(0.4≤|ρ|<0.7)" = "#9AD2AD",
+      "Strong\n(|ρ|≥0.7)" = "#57AABA"
     )) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
           axis.text.y = element_text(angle = 45, hjust = 1),
@@ -190,10 +192,10 @@ create_category_heatmap <- function(results, country) {
                   color = category),
               size = 2.5) +
     scale_color_manual(values = c(
-      "Negligible" = "azure3",
-      "Weak" = "azure4",
-      "Moderate" = "azure",
-      "Strong" = "azure"
+      "Negligible\n(|ρ|<0.1)" = "azure3",
+      "Weak\n(0.1≤|ρ|<0.4)" = "azure4",
+      "Moderate\n(0.4≤|ρ|<0.7)" = "azure",
+      "Strong\n(|ρ|≥0.7)" = "azure"
     ), guide = "none")
   
   ggsave(file.path("plots", paste0(country, "_correlation_category_heatmap.png")), 
@@ -246,15 +248,15 @@ combined_plot3 <- (pk_plot + vn_plot + ph_plot + in_plot +
 
 ggsave(file.path("plots", "fig2.jpg"), plot=combined_plot,
        bg = "white", width = 18, height = 24, units = "cm", dpi=300)
-
-ggsave(file.path("plots", "spearman_correlation_heatmaps_combined.pdf"), plot=combined_plot,
-       bg = "white", width = 30, height = 27, units = "cm", dpi=320)
+# 
+# ggsave(file.path("plots", "spearman_correlation_heatmaps_combined.pdf"), plot=combined_plot,
+#        bg = "white", width = 30, height = 27, units = "cm", dpi=300)
 
 ggsave(file.path("plots", "spearman_correlation_heatmaps_combined2.pdf"), plot=combined_plot2,
-       bg = "white", width = 30, height = 27, units = "cm", dpi=320)
+       bg = "white", width = 30, height = 27, units = "cm", dpi=300)
 
 ggsave(file.path("plots", "spearman_correlation_heatmaps_combined3.pdf"), plot=combined_plot3,
-       bg = "white", width = 30, height = 27, units = "cm", dpi=320)
+       bg = "white", width = 30, height = 27, units = "cm", dpi=300)
 
 # Create table S5
 table_S5 <- correlation_categories %>% 
